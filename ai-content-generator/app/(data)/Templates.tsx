@@ -15,7 +15,7 @@ export default[
             },
             {
                 label:'Enter blog outline',
-                field:'text area',
+                field:'textarea',
                 name:'outline',
             }
         ]
@@ -51,7 +51,7 @@ export default[
         form: [
             {
                 label: 'Enter your Niche',
-                field: 'input',
+                field: 'textarea',
                 name: 'niche',
                 required:true
             },
@@ -183,7 +183,7 @@ export default[
         form: [
             {
                 label: 'Enter Keywords for your post',
-                field: 'input',
+                field: 'textarea',
                 name: 'keywords',
                 required:true
             },
@@ -201,7 +201,7 @@ export default[
         form: [
             {
                 label: 'Enter Keywords for your instagram hastag',
-                field: 'input',
+                field: 'textarea',
                 name: 'keywords',
                 required:true
             },
@@ -219,7 +219,7 @@ export default[
         form: [
             {
                 label: 'Enter Keywords / Niche for your instagram idea',
-                field: 'input',
+                field: 'textarea',
                 name: 'keywords',
                 required:true
             },
@@ -237,7 +237,7 @@ export default[
         form: [
             {
                 label: 'Enter text to correct the grammer',
-                field: 'input',
+                field: 'textarea',
                 name: 'inputText',
                 required:true
             },
