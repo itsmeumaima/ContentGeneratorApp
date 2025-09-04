@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@toast-ui/react-editor": "^3.2.3",
     "lucide-react": "^0.541.0"
   }
 }

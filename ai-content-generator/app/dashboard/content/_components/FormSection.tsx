@@ -1,4 +1,5 @@
 "use client"
+import { useState } from 'react'
 import React from 'react'
 import { TEMPLATE } from '../../_components/TemplateListSection'
 import Image from 'next/image';
@@ -8,10 +9,19 @@ import { Button } from '@/components/ui/button';
 
 interface PROPS{
     selectedTemplate?:TEMPLATE;
+    userFormInput:any
 }
-function FormSection({selectedTemplate}:PROPS) {
+function FormSection({selectedTemplate,userFormInput}:PROPS) {
+  const [formData,setFormData]=useState<any>();
+
+  const handleInputChange=(event:any)=>{
+    const {name,value}=event.target;
+    setFormData({...formData,[name]:value})
+  }
   const onSubmit=(e:any)=>{
       e.preventDefault();
+      userFormInput(formData)
+      
   }
   return (
     <div className='p-5 shadow-md border rounded-lg bg-white'>
@@ -26,9 +36,11 @@ function FormSection({selectedTemplate}:PROPS) {
             <div className='my-2 flex flex-col gap-2 mb-7' key={index}>
                 <label className='font-bold'>{item.label}</label>
                 {item.field=='input'?
-                <Input/>
+                <Input name={item.name} required={item?.required}
+                onChange={handleInputChange}/>
                 :item.field=='textarea'?
-                <Textarea/>:null
+                <Textarea name={item.name} required={item?.required}
+                onChange={handleInputChange}/>:null
               }
             </div>
            ))} 
