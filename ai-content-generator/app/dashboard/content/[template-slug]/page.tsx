@@ -7,6 +7,8 @@ import { TEMPLATE } from "../../_components/TemplateListSection";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+// import { chatSession } from "@/utils/AiModal";
+import { useState } from "react";
 
 interface PROPS {
   params: Promise<{
@@ -21,10 +23,25 @@ export default function CreateNewContent({ params }: PROPS) {
   const selectedTemplate: TEMPLATE | undefined = Templates?.find(
     (item) => item.slug === slug
   );
+  
+  const [loading,setLoading]=useState(false);
 
-  const GenerateAIContent = (formData: any) => {
-    console.log("Form Data:", formData);
-  };
+  const GenerateAIContent = async (formData: any) => {
+  setLoading(true);
+
+  const SelectedPrompt = selectedTemplate?.aiPrompt;
+  const FinalAIPrompt = JSON.stringify(formData) + ", " + SelectedPrompt;
+
+  const res = await fetch("/api/generate", {
+    method: "POST",
+    body: JSON.stringify({ prompt: FinalAIPrompt }),
+    headers: { "Content-Type": "application/json" },
+  });
+
+  const data = await res.json();
+  console.log(data.output[0].content); // contains text + image URLs
+  setLoading(false);
+};
 
   return (
     <div className="p-10">
@@ -39,6 +56,7 @@ export default function CreateNewContent({ params }: PROPS) {
         <FormSection
           selectedTemplate={selectedTemplate}
           userFormInput={(v: any) => GenerateAIContent(v)}
+          loading={loading}
         />
         <div className="col-span-2">
           <OutputSection />
