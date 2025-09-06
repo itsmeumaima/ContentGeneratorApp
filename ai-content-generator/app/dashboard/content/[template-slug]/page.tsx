@@ -25,7 +25,7 @@ export default function CreateNewContent({ params }: PROPS) {
   );
   
   const [loading,setLoading]=useState(false);
-
+  const [aiOutput,setAiOutput]=useState<string>('');
   const GenerateAIContent = async (formData: any) => {
   setLoading(true);
 
@@ -39,7 +39,8 @@ export default function CreateNewContent({ params }: PROPS) {
   });
 
   const data = await res.json();
-  console.log(data.output[0].content); // contains text + image URLs
+  console.log(data.output[0].content); // contains text
+  setAiOutput(data.output[0].content);
   setLoading(false);
 };
 
@@ -59,7 +60,7 @@ export default function CreateNewContent({ params }: PROPS) {
           loading={loading}
         />
         <div className="col-span-2">
-          <OutputSection />
+          <OutputSection aiOutput={aiOutput}/>
         </div>
       </div>
     </div>
