@@ -9,7 +9,10 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 // import { chatSession } from "@/utils/AiModal";
 import { useState } from "react";
-
+import { AIOutput } from "@/utils/schema";
+import { db } from "@/utils/db";
+import { useUser } from "@clerk/nextjs";
+import moment from "moment";
 interface PROPS {
   params: Promise<{
     "template-slug": string;
@@ -23,9 +26,10 @@ export default function CreateNewContent({ params }: PROPS) {
   const selectedTemplate: TEMPLATE | undefined = Templates?.find(
     (item) => item.slug === slug
   );
-  
+  const { user } = useUser();
   const [loading,setLoading]=useState(false);
   const [aiOutput,setAiOutput]=useState<string>('');
+
   const GenerateAIContent = async (formData: any) => {
   setLoading(true);
 
@@ -39,10 +43,22 @@ export default function CreateNewContent({ params }: PROPS) {
   });
 
   const data = await res.json();
-  console.log(data.output[0].content); // contains text
+  // console.log(data.output[0].content); // contains text
   setAiOutput(data.output[0].content);
+  await SaveInDb(formData,selectedTemplate?.slug,data.output[0].content);
   setLoading(false);
 };
+
+  const SaveInDb=async(formData:any,slug:any,aiResp:string)=>{
+    const result=await db.insert(AIOutput).values({
+      formData:formData,
+      templateSlug:slug,
+      aiResponse:aiResp,
+      createdBy: user?.primaryEmailAddress?.emailAddress ?? "",
+      createdAt:moment().format('DD/MM/yyyy'),
+    })
+    console.log("Saved in db",result);
+  }
 
   return (
     <div className="p-10">
