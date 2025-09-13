@@ -1,3 +1,4 @@
+import { UserButton } from '@clerk/nextjs'
 import { Search } from 'lucide-react'
 import React from 'react'
 
@@ -11,10 +12,11 @@ function Header() {
             className='outline-none'
             />
         </div>
-        <div>
+        <div className='flex gap-5 items-center'>
             <h2 className='bg-blue-600 p-1 rounded-full text-xs text-white'>
                 🔥Join Membership just for $9.99/Month
             </h2>
+            <UserButton/>
 
         </div>
     </div>
